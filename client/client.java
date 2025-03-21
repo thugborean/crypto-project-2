@@ -19,8 +19,8 @@ public class client {
         
         // Adding custom TrustStore
         // char[] passphrase_ts = CACERTSPassword.toCharArray();
-        // KeyStore ts = KeyStore.getInstance("PKCS12");
-        // ts.load(new FileInputStream("/pathtoyour/truststore.p12"), passphrase_ts);
+        KeyStore ts = KeyStore.getInstance("PKCS12");
+        ts.load(new FileInputStream(PKCS12Location), passphrase_ks);
         // TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
         // tmf.init(ts);
         // TrustManager[] trustManagers = tmf.getTrustManagers();
@@ -29,10 +29,16 @@ public class client {
         // ??
         
         SSLContext context = SSLContext.getInstance("TLSv1.3");
-        
+    
+        // KeyManagers from the KeyManagerFactory
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+        kmf.init(ts, passphrase_ks);
+        KeyManager[] keyManagers = kmf.getKeyManagers();
+
         // TrustManager (2nd arg) is null to use the default trust manager cacerts
         // To use custom TrustStore, 2nd argument changes to ’trustManagers’
         // context.init(??, ??, ??); // Add correct arguments
+        context.init(keyManagers, null, null);
         
         SSLSocketFactory sf = context.getSocketFactory();
         
