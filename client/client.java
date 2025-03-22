@@ -12,7 +12,7 @@ public class client {
     private static final String PKCS12Password = "client"; // Update if password changed
     
     // Add custom TrustStore password if not using cacerts
-    // private static final String TSPassword = "changeit";
+    private static final String TSPassword = "changeit";
     
     public static void main(String[] args) throws Exception {
         char[] passphrase_ks = PKCS12Password.toCharArray();
@@ -21,9 +21,9 @@ public class client {
         // char[] passphrase_ts = CACERTSPassword.toCharArray();
         KeyStore ts = KeyStore.getInstance("PKCS12");
         ts.load(new FileInputStream(PKCS12Location), passphrase_ks);
-        // TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-        // tmf.init(ts);
-        // TrustManager[] trustManagers = tmf.getTrustManagers();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        tmf.init(ts);
+        TrustManager[] trustManagers = tmf.getTrustManagers();
         
         // Add code for Keystore
         // ??
@@ -38,7 +38,7 @@ public class client {
         // TrustManager (2nd arg) is null to use the default trust manager cacerts
         // To use custom TrustStore, 2nd argument changes to ’trustManagers’
         // context.init(??, ??, ??); // Add correct arguments
-        context.init(keyManagers, null, null);
+        context.init(keyManagers, trustManagers, new SecureRandom());
         
         SSLSocketFactory sf = context.getSocketFactory();
         
