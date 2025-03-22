@@ -10,9 +10,10 @@ public class client {
     // Client PKCS12 file path
     private static final String PKCS12Location = "../client/client.p12";
     private static final String PKCS12Password = "client"; // Update if password changed
+    private static String KSlocation = "../client/ks.p12";
     
     // Add custom TrustStore password if not using cacerts
-    private static final String TSPassword = "changeit";
+    private static final String TSPassword = "client";
     
     public static void main(String[] args) throws Exception {
         char[] passphrase_ks = PKCS12Password.toCharArray();
@@ -20,19 +21,21 @@ public class client {
         // Adding custom TrustStore
         // char[] passphrase_ts = CACERTSPassword.toCharArray();
         KeyStore ts = KeyStore.getInstance("PKCS12");
-        ts.load(new FileInputStream(PKCS12Location), passphrase_ks);
+        ts.load(new FileInputStream(KSlocation), TSPassword.toCharArray());
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
         tmf.init(ts);
         TrustManager[] trustManagers = tmf.getTrustManagers();
         
         // Add code for Keystore
-        // ??
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        ks.load(new FileInputStream(PKCS12Location), TSPassword.toCharArray());
+        
         
         SSLContext context = SSLContext.getInstance("TLSv1.3");
     
         // KeyManagers from the KeyManagerFactory
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-        kmf.init(ts, passphrase_ks);
+        kmf.init(ks, passphrase_ks);
         KeyManager[] keyManagers = kmf.getKeyManagers();
 
         // TrustManager (2nd arg) is null to use the default trust manager cacerts
