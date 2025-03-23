@@ -50,8 +50,9 @@ public class server {
             // Continuously accept new connections
             while (keepRunning) {
                 try (SSLSocket s = (SSLSocket) ss.accept();
-                     BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
-                    
+                    BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) 
+                    {
+                    s.setNeedClientAuth(true);
                     System.out.println("Client connected.");
 
                     // Read and process input from the client
