@@ -27,14 +27,15 @@ public class server {
         KeyManager[] keyManagers = kmf.getKeyManagers();
 
         // Adding custom TrustStore
-        // System.setProperty("javax.net.ssl.trustStore","<pathtoyour>/truststore.p12");
-        // System.setProperty("javax.net.ssl.trustStorePassword","changeit");
-        // tmf.init(ts);
+        System.setProperty("javax.net.ssl.trustStore","server.p12");
+        System.setProperty("javax.net.ssl.trustStorePassword","server");
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        tmf.init(ks);
         
         // Obtain the default TrustManagers for the system’s truststore (cacerts)
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-        tmf.init((KeyStore) null); // Use the system’s truststore ’cacerts’
-        TrustManager[] trustManagers = tmf.getTrustManagers();
+        // TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+        // tmf.init((KeyStore) null); // Use the system’s truststore ’cacerts’
+        // TrustManager[] trustManagers = tmf.getTrustManagers();
 
         // Create an SSLContext to run TLSv1.3 and initialize it
         SSLContext context = SSLContext.getInstance("TLSv1.3");
