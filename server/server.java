@@ -44,7 +44,7 @@ public class server {
 
         // Create server socket
         try (SSLServerSocket ss = (SSLServerSocket) ssf.createServerSocket(PORT)) {
-            ss.setNeedClientAuth(true); // Require client authentication
+            // ss.setNeedClientAuth(true); // Require client authentication
             System.out.println("Server started and waiting for connections...");
 
             // Continuously accept new connections
@@ -52,7 +52,7 @@ public class server {
                 try (SSLSocket s = (SSLSocket) ss.accept();
                     BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) 
                     {
-                    s.setNeedClientAuth(true);
+                    // s.setNeedClientAuth(true);
                     System.out.println("Client connected.");
 
                     // Read and process input from the client
